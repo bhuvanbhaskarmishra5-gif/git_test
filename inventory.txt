@@ -1,0 +1,153 @@
+import copy
+stockc={}
+stock={}
+bill={}
+sell={}
+total=0
+mess='\n\
+Enter 1 to add Purchase Bill\n\
+Enter 2 to show Current Stock\n\
+Enter 3 to add Sell Bill\n\
+Enter 4 to track Revenue and Profit\n\
+Enter 5 to remove item from stock\n\
+Enter 6 to exit\n'
+
+while True:
+    total=0
+    inp=input("Add Items in stock: ")
+    q=int(input("Enter Quantity: "))
+    p=int(input("Enter Price: "))
+    stock[inp]=[]
+    stock[inp].append(q)
+    stock[inp].append(p)
+    i=input("Enter 1 to add more items : ")
+    if(i!='1'):
+        break
+print('\n\n')
+print('-'*60)
+print(f"{' ':<15}{'='*3} {'Current Stock'} {'='*3}")
+print('\n')
+print(f"{'Items':10}{'|':<10}{'Quantity':<10}{'|':<10}{'Price'}")
+print('-'*60)
+
+for i in stock:
+        print(f"{i:<10}{'|':<10}{(str(stock[i][0])+'Kg'):<10}{'|':<10}{('Rs.'+str(stock[i][1])):<15}")
+        print('-'*60)
+
+print(mess)
+choice=int(input())
+stockc=copy.deepcopy(stock)
+while choice!=6:
+    if(choice==2):
+        print('\n\n')
+        print('-'*60)
+        print(f"{' ':<15}{'='*3} {'Current Stock'} {'='*3}")
+        print('\n')
+        print(f"{'Items':10}{'|':<10}{'Quantity':<10}{'|':<10}{'Price'}")
+        print('-'*60)
+        
+        for i in stock:
+                print(f"{i:<10}{'|':<10}{(str(stock[i][0])+'Kg'):<10}{'|':<10}{('Rs.'+str(stock[i][1])):<15}")
+                print('-'*60)
+
+        print(mess)
+        choice=(int)(input())
+    elif(choice==1):
+        while True:
+            print("Enter the purchase bill : ")
+            inp=input("Enter item name: ")
+            q=(int)(input("Enter item's quantity: "))
+            p=(int)(input("Enter item's price: "))
+            if inp in stock:
+                stock[inp][0]=stock[inp][0]+q
+                stock[inp][1]=p
+            else:
+               stock[inp]=[]
+               stock[inp].append(q)
+               stock[inp].append(p)
+            if inp in stockc:
+                stockc[inp][0]=stockc[inp][0]+q
+                stockc[inp][1]=p
+            else:
+               stockc[inp]=[]
+               stockc[inp].append(q)
+               stockc[inp].append(p)
+                
+            c=input("Do yo want to add purchase bill again (Y/N): ")
+            if(c.lower()!='y'):
+                break
+        
+        print(mess)
+        choice=(int)(input())
+    elif(choice==3):
+        while True:
+            print("Enter the Sell bill : ")
+            inp=input("Enter item name: ")
+  
+            if inp in stock:
+                q=(int)(input("Enter item's quantity: "))
+                p=(int)(input(f"base price of {inp} is {'Rs.'+str(stock[inp][1])} Enter todays rate : "))
+                sell[inp]=[]
+                sell[inp].append(q)
+                sell[inp].append(p)
+                if(stock[inp][0]>=q):
+                    stock[inp][0]=stock[inp][0]-q
+                    total=total+(p*q)
+                    if(inp in bill):
+                        billll[inp][0]=bill[inp][0]+q
+                        bill[inp][1]=p
+                    else:
+                        bill[inp]=[]
+                        bill[inp].append(q)
+                        bill[inp].append(p)
+                    if(stock[inp][0]<=5):
+                            print('\n')
+                            print(f"Warning : Only {str(stock[inp][0])+'kg'} {inp} is remaining\n") 
+                else:
+                    print("not enough item , please try again")
+            else:
+                print("Item not Available")
+            
+            c=input("Do yo want to add sell bill again (Y/N):")
+            if(c.lower()!='y'):
+               break
+        print('\n')
+        print(f"{' ':<15}{'='*3} {'Sell Bill'} {'='*3}")
+        print('-'*70)
+        print(f"{'Item':<10}{'|':<10}{'Quantity':<10}{'|':<10}{'Price'}")
+        print('-'*70)
+        for i in sell:
+            print(f"{i:<10}{'|':<10}{sell[i][0]:<10}{'|':<10}{sell[i][1]}")
+            print('-'*70)
+
+        print(f"Total Amount{' '*45}{total}")
+        print('-'*70)
+        sell.clear()
+        print(mess)
+        choice=(int)(input())
+    elif(choice==4):
+        print('-'*70)
+        print(f"{'Item name':<10}{'|':<2}{'pur Qty':<10}{'|':<2}{'Sold Qty':<10}{'|':<2}{'Stock':<10}{'|':<2}{'Revenue':<10}{'|':<2}{'profit':<10}")
+        print('-'*70)
+        for i in bill:
+            print(f"{i:<10}{'|':<2}{stockc[i][0]:<10}{'|':<2}{bill[i][0]:<10}{'|':<2}{stock[i][0]:<10}{'|':<2}{bill[i][0]*bill[i][1]:<10}{'|':<2}{(bill[i][0]*bill[i][1])-(bill[i][0]*stockc[i][1]):<10}")
+            print('-'*70)
+        
+        print(mess)
+        choice=(int)(input())
+    elif(choice==5):
+        inp=input("Enter item name: ")
+        print("\n*** Warning The Removed Item cannot be recovered *** \nAre you sure you want to remove the item (y/n)") 
+        o=input()
+        if o.lower()=='y':
+            if inp in stock:
+                del stock[inp]
+            if inp in stockc:
+                del stockc[inp]
+            print(f"{inp} Successfully removed from the stock")
+
+        print(mess)
+        choice=(int)(input())
+        
+    else:
+        choice=6
