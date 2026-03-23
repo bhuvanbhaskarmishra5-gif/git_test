@@ -1,136 +1,29 @@
-status={'1a':['Available'],'1b':['Available'],'1c':['Available'],'1d':['Available'],
-        '2a':['Available'],'2b':['Available'],'2c':['Available'],'2d':['Available'],
-        '3a':['Available'],'3b':['Available'],'3c':['Available'],'3d':['Available'],
-        '4a':['Available'],'4b':['Available'],'4c':['Available'],'4d':['Available'],}
-
-booked={}
-mess='\n\
-Enter 1 to book seat(s)\n\
-Enter 2 to show booking status\n\
-Enter 3 to all booked seats\n\
-Enter 4 to cancel booked seat\n\
-Enter 5 to exit'
-
-li={}
-orgs=''
-orgn=''
-count=0
-enter = 1
-pnr=25005
-while enter!=5:
-    if enter==1:
-        count=1
-        print("Current Seat Map ->\n")
-        for i in status:
-            print(f"{i.upper():<4}{'['+str(status[i][0].capitalize())+']':<15}",end=f"{'|':<3}",sep='  ')
-            count+=1
-            if(count>4):
-                count=1
-                print('\n')
-        print("*** Book Seat ***\n")
-        choice=1
-        count=0
-        while (choice==1):
-            inp=input("Enter Seat number : ").lower()
-            if inp in status:
-                if status[inp][0] == 'Available':
-                    name=input("Enter Passenger name: ")
-                    age=(int)(input("Enter age : "))
-                    print(f"Seat {inp.capitalize()} successfully booked")
-                    if pnr not in li:
-                        li[pnr]=[]
-                    li[pnr].append(inp)
-                    if pnr not in booked:
-                        booked[pnr]=[]
-                    booked[pnr].append(inp)
-                    booked[pnr].append(age)
-                    booked[pnr].append(name)
-                    status[inp][0]=name
-                    if(len(status[inp])==1):
-                        status[inp].append(pnr)
-                    else:
-                        status[inp][1]=pnr
-                    if count==0:
-                        orgn=name
-                        count+=1
-                else:
-                    print("Seat Aleready Boooked")
-                choice=input("*** Would you like to book another seat (y/n) *** " )
-                if(choice.lower()=='y'):
-                    choice=1
-                else:
-                    choice=0
-                    break
-            else:
-                print("Invalid Seat number")
-        
-        print(f"\n*** Seat(s) {li[pnr]} Successfully booked. {orgn.capitalize()} your PNR is {pnr}, please note it ***")
-        pnr+=5
-        print('\n',mess)
-        enter=(int)(input())
-    elif enter==2:
-        count=1
-        print("Current Seat Map ->\n")
-        for i in status:
-            print(f"{i.upper():<4}{'['+str(status[i][0].capitalize())+']':<15}",end=f"{'|':<3}",sep='  ')
-            count+=1
-            if(count>4):
-                count=1
-                print('\n')
-        print('\n',mess)
-        enter=(int)(input())
-        
-    elif enter==3:
-        print(f"{' '*30}{'='*3}{'All Booked Seats'}{'='*3}")
-        print(f"{'Passenger Name':<20}{'|':<3}{'Age':<20}{'|':<3}{'Seat Number':<20}{'|':<3}{'PNR number':<20}")
-        for i in booked:
-            print('-'*70)
-            x=0
-            while x+2<len(booked[i]):
-                print(f"{booked[i][x+2].capitalize():<20}{'|':<3}{booked[i][x+1]:<20}{'|':<3}{booked[i][x]:<20}{'|':<3}{i}")
-                x+=3
-        print('\n',mess)
-        enter=(int)(input())
-    elif enter==4:
-        print("*** Cancel Booked Seat ***")
-        while True:
-            a=(int)(input('Enter PNR Number of your bookings: '))
-            if a in li:
-                print(f"*** By Using {a} PNR Number {li[a]} seat(s) were booked. ***") 
-                s=input("Enter seat number :")
-                if status[s][1]==a:
-                    status[s][0]='Available'
-                    x=0
-                    q=0
-                    while x<len(li[a]):
-                        if li[a][x]==s:
-                            del li[a][x]
-                            break
-                        x+=1
-                    while q<len(booked[a]):
-                        if booked[a][q]==s:
-                            del booked[a][q:q+3]
-                            break
-                        q+=1
-                        
-                    
-                    print(f"Seat {s} canceled successfully\n")
-                    z=input('Would you like to cancel another seat(y/n) ')
-                    if(z.lower()!='y'):
-                        break
-                            
-                else:
-                    print("*** PNR and Seat number ae not matching ***")
-                    
-            else:
-                print("Wrong PNR , No seats are booked with this PNR")
-                break
-                
-        print('\n',mess)
-        enter=(int)(input())
-    else:
-        break
-
-        
-            
-        
+int minCost(char* color, int* needtime, int needtimeSize) {
+    int i=0,j=0,time=0,in,jn,i2=1,min;
+    
+    while(color[i2]!='\0'){
+    if(color[i]==color[i2] && color[i]!='0' && color[i2]!='0'){
+    if(needtime[i]<needtime[i2]){
+    j=i;
+    }
+    else{
+    j=i2;
+    }
+    color[j]='0';
+    time=time+needtime[j];
+    }
+    else if(color[i2]=='0' && color[i]!='0'){
+    i2++;
+    }
+    else if(color[i]=='0' && color[i2]!='0'){
+    i++;
+    if(i>=i2)
+    i2=i+1;
+    }
+    else{
+    i++;
+    i2++;
+    }
+    }
+    return time;
+}
