@@ -1,0 +1,29 @@
+int minCost(char* color, int* needtime, int needtimeSize) {
+    int i=0,j=0,time=0,in,jn,i2=1,min;
+    
+    while(color[i2]!='\0'){
+    if(color[i]==color[i2] && color[i]!='0' && color[i2]!='0'){
+    if(needtime[i]<needtime[i2]){
+    j=i;
+    }
+    else{
+    j=i2;
+    }
+    color[j]='0';
+    time=time+needtime[j];
+    }
+    else if(color[i2]=='0' && color[i]!='0'){
+    i2++;
+    }
+    else if(color[i]=='0' && color[i2]!='0'){
+    i++;
+    if(i>=i2)
+    i2=i+1;
+    }
+    else{
+    i++;
+    i2++;
+    }
+    }
+    return time;
+}
